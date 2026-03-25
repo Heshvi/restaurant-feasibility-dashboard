@@ -323,7 +323,7 @@ def render_dashboard(result: dict[str, object]) -> None:
     c1.metric("Demand Score", demand["demand_score"])
     c2.metric("Success Probability", f"{summary['success_probability']}%")
     c3.metric("Risk Score", f"{summary['risk_score']}%")
-    c4.metric("Verdict", summary["viability_verdict"])
+    c4.metric("Demand Grade", demand["demand_grade"])
 
     left, right = st.columns([1.2, 1])
 
@@ -335,14 +335,9 @@ def render_dashboard(result: dict[str, object]) -> None:
         col_a.metric("Annual Profit", format_currency(profitability["annual_profit_estimate"]))
         break_even = profitability["break_even_months"] if profitability["break_even_months"] is not None else "No break-even"
         col_b.metric("Break-even", break_even)
-
-        st.subheader("Scenario Revenue")
-        st.write(
-            {
-                "Conservative": format_currency(revenue["conservative_revenue"]),
-                "Base Case": format_currency(revenue["base_case_revenue"]),
-                "Optimistic": format_currency(revenue["optimistic_revenue"]),
-            }
+        st.info(
+            f"Business Viability: {summary['viability_verdict']} | "
+            f"Excel Demand Action: {demand['demand_action']}"
         )
 
         st.subheader("Recommendations")
